@@ -1,6 +1,18 @@
 'use client'
 
+import { useState, useEffect } from 'react'
+
 export default function CharterBusWebsite() {
+  const [busPosition, setBusPosition] = useState(0)
+
+  // Animate bus movement
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setBusPosition((prev) => (prev >= 100 ? -10 : prev + 0.5))
+    }, 30)
+    return () => clearInterval(interval)
+  }, [])
+
   const services = [
     {
       title: 'Corporate Travel',
@@ -41,7 +53,7 @@ export default function CharterBusWebsite() {
       <header className="bg-black text-white sticky top-0 z-50 shadow-lg">
         <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
           <div>
-            <h1 className="text-2xl font-bold tracking-wide">Elite Charter Tours</h1>
+            <h1 className="text-2xl font-bold tracking-wide">buses4rent</h1>
             <p className="text-sm text-gray-300">Charter & Tour Bus Services</p>
           </div>
 
@@ -130,11 +142,31 @@ export default function CharterBusWebsite() {
                 key={index}
                 className="bg-gray-900 rounded-3xl overflow-hidden border border-gray-700 shadow-lg"
               >
-                <img
-                  src="https://images.unsplash.com/photo-1519003722824-194d4455a60c?q=80&w=1200&auto=format&fit=crop"
-                  alt="Bus"
-                  className="h-56 w-full object-cover"
-                />
+                {index === 0 ? (
+                  // Animated bus container for first item
+                  <div className="h-56 w-full bg-gradient-to-r from-blue-300 to-blue-500 relative overflow-hidden flex items-center">
+                    <style>{`
+                      @keyframes busMove {
+                        0%, 100% { transform: translateX(-10%); }
+                        50% { transform: translateX(110%); }
+                      }
+                      .animated-bus {
+                        animation: busMove 4s ease-in-out infinite;
+                      }
+                    `}</style>
+                    <img
+                      src="/56-passenger-coach.png"
+                      alt="Moving Bus"
+                      className="animated-bus h-full w-auto object-contain"
+                    />
+                  </div>
+                ) : (
+                  <img
+                    src={index === 1 ? '/mini-coach-shuttle.png' : '/luxury-tour-bus.png'}
+                    alt={bus.name}
+                    className="h-56 w-full object-cover"
+                  />
+                )}
 
                 <div className="p-6">
                   <h4 className="text-2xl font-bold mb-3">{bus.name}</h4>
@@ -223,7 +255,7 @@ export default function CharterBusWebsite() {
             </p>
 
             <div className="space-y-4 text-lg">
-              <p><strong>Phone:</strong> (555) 555-5555</p>
+              <p><strong>Phone:</strong> (469) 383-6747</p>
               <p><strong>Email:</strong> info@elitechartertours.com</p>
               <p><strong>Location:</strong> Texas, United States</p>
             </div>
